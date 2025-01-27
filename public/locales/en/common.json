@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "ElevateYourSoul",
+    "tagline": "Transform Your Mental Wellness Journey"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign Out"
+  },
+  "actions": {
+    "start": "Begin Your Journey",
+    "save": "Save",
+    "cancel": "Cancel",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "features": {
+    "meditation": "Meditation",
+    "breathing": "Breathing Exercises",
+    "journaling": "Journaling",
+    "mood": "Mood Tracking",
+    "games": "Therapeutic Games"
+  }
+}
