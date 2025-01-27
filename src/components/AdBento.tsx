@@ -20,7 +20,7 @@ export default function AdBento({ slot, format = 'auto', className = '', testMod
       // Initialize AdSense if not already initialized
       if (!window.adsbygoogle) {
         const script = document.createElement('script');
-        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT || 'ca-pub-xxxxxxxxxxxxxxxx'}`;
+        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT || 'ca-pub-7289986188777140'}`;
         script.async = true;
         script.crossOrigin = 'anonymous';
         document.head.appendChild(script);
@@ -91,7 +91,7 @@ export default function AdBento({ slot, format = 'auto', className = '', testMod
           width: '100%',
           height: '100%',
         }}
-        data-ad-client={import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT}
+        data-ad-client={import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT || 'ca-pub-7289986188777140'}
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive="true"
