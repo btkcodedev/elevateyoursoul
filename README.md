@@ -106,7 +106,7 @@ Any commercial use of the Software or its derivatives must adhere to the followi
 - Any modifications must be clearly marked as such
 
 For licensing inquiries or permissions:
-legal@elevateyoursoul.com
+btk.codedev@gmail.com
 
 ## 🤝 Contributing
 

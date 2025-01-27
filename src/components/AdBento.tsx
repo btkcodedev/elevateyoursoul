@@ -1,28 +1,36 @@
-import React, { useEffect } from 'react';
-import { Box, Text, VStack } from '@chakra-ui/react';
+import { useEffect } from "react";
+import { Box, Text, VStack } from "@chakra-ui/react";
 
 declare global {
   interface Window {
-    adsbygoogle: any[];
+    adsbygoogle: unknown[];
   }
 }
 
 interface AdBentoProps {
   slot: string;
-  format?: 'auto' | 'rectangle' | 'horizontal' | 'vertical';
+  format?: "auto" | "rectangle" | "horizontal" | "vertical";
   className?: string;
   testMode?: boolean;
 }
 
-export default function AdBento({ slot, format = 'auto', className = '', testMode = false }: AdBentoProps) {
+export default function AdBento({
+  slot,
+  format = "auto",
+  className = "",
+  testMode = false,
+}: AdBentoProps) {
   useEffect(() => {
     try {
       // Initialize AdSense if not already initialized
       if (!window.adsbygoogle) {
-        const script = document.createElement('script');
-        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT || 'ca-pub-7289986188777140'}`;
+        const script = document.createElement("script");
+        script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
+          import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT ||
+          "ca-pub-7289986188777140"
+        }`;
         script.async = true;
-        script.crossOrigin = 'anonymous';
+        script.crossOrigin = "anonymous";
         document.head.appendChild(script);
         window.adsbygoogle = window.adsbygoogle || [];
       }
@@ -30,11 +38,11 @@ export default function AdBento({ slot, format = 'auto', className = '', testMod
       // Push the ad
       window.adsbygoogle.push({});
     } catch (error) {
-      console.error('AdSense error:', error);
+      console.error("AdSense error:", error);
     }
   }, [slot]);
 
-  if (testMode || import.meta.env.VITE_GOOGLE_ADSENSE_TEST_MODE === 'true') {
+  if (testMode || import.meta.env.VITE_GOOGLE_ADSENSE_TEST_MODE === "true") {
     return (
       <Box
         className={`ad-container ${className}`}
@@ -51,14 +59,20 @@ export default function AdBento({ slot, format = 'auto', className = '', testMod
         alignItems="center"
         justifyContent="center"
         _hover={{
-          borderColor: 'gray.300',
+          borderColor: "gray.300",
         }}
         transition="all 0.2s"
       >
         <VStack spacing={2}>
-          <Text color="gray.500" fontSize="sm">Advertisement Placeholder</Text>
-          <Text color="gray.400" fontSize="xs">Slot: {slot}</Text>
-          <Text color="gray.400" fontSize="xs">Format: {format}</Text>
+          <Text color="gray.500" fontSize="sm">
+            Advertisement Placeholder
+          </Text>
+          <Text color="gray.400" fontSize="xs">
+            Slot: {slot}
+          </Text>
+          <Text color="gray.400" fontSize="xs">
+            Format: {format}
+          </Text>
         </VStack>
       </Box>
     );
@@ -80,18 +94,21 @@ export default function AdBento({ slot, format = 'auto', className = '', testMod
       alignItems="center"
       justifyContent="center"
       _hover={{
-        borderColor: 'gray.200',
+        borderColor: "gray.200",
       }}
       transition="all 0.2s"
     >
       <ins
         className="adsbygoogle"
         style={{
-          display: 'block',
-          width: '100%',
-          height: '100%',
+          display: "block",
+          width: "100%",
+          height: "100%",
         }}
-        data-ad-client={import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT || 'ca-pub-7289986188777140'}
+        data-ad-client={
+          import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT ||
+          "ca-pub-7289986188777140"
+        }
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive="true"
