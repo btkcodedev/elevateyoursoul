@@ -14,15 +14,16 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Heart, Plus, X } from 'lucide-react';
+import { useSessionStore } from '../store/sessionStore';
 
 export default function GratitudeJournal() {
-  const [entries, setEntries] = useState<string[]>([]);
   const [newEntry, setNewEntry] = useState('');
+  const { addGratitudeEntry, removeGratitudeEntry, gratitudeEntries } = useSessionStore();
   const toast = useToast();
 
   const handleAddEntry = () => {
-    if (newEntry.trim() && entries.length < 5) {
-      setEntries([...entries, newEntry.trim()]);
+    if (newEntry.trim() && gratitudeEntries.length < 5) {
+      addGratitudeEntry(newEntry.trim());
       setNewEntry('');
       toast({
         title: "Gratitude noted",
@@ -33,8 +34,8 @@ export default function GratitudeJournal() {
     }
   };
 
-  const handleRemoveEntry = (index: number) => {
-    setEntries(entries.filter((_, i) => i !== index));
+  const handleRemoveEntry = (id: string) => {
+    removeGratitudeEntry(id);
   };
 
   return (
@@ -61,7 +62,7 @@ export default function GratitudeJournal() {
               leftIcon={<Plus size={16} />}
               colorScheme="blue"
               onClick={handleAddEntry}
-              isDisabled={!newEntry.trim() || entries.length >= 5}
+              isDisabled={!newEntry.trim() || gratitudeEntries.length >= 5}
             >
               Add
             </Button>
@@ -69,9 +70,9 @@ export default function GratitudeJournal() {
         </Box>
 
         <List spacing={3}>
-          {entries.map((entry, index) => (
+          {gratitudeEntries.map((entry) => (
             <ListItem
-              key={index}
+              key={entry.id}
               p={3}
               bg="blue.50"
               rounded="md"
@@ -81,7 +82,7 @@ export default function GratitudeJournal() {
             >
               <HStack>
                 <ListIcon as={Heart} color="pink.500" />
-                <Text>{entry}</Text>
+                <Text>{entry.content}</Text>
               </HStack>
               <IconButton
                 icon={<X size={14} />}
@@ -89,13 +90,13 @@ export default function GratitudeJournal() {
                 variant="ghost"
                 colorScheme="red"
                 size="sm"
-                onClick={() => handleRemoveEntry(index)}
+                onClick={() => handleRemoveEntry(entry.id)}
               />
             </ListItem>
           ))}
         </List>
 
-        {entries.length === 0 && (
+        {gratitudeEntries.length === 0 && (
           <Text color="gray.500" textAlign="center" fontSize="sm">
             Add up to 5 things you're grateful for today
           </Text>

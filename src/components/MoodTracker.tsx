@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Box, Heading, Text, Button, SimpleGrid, VStack, HStack } from '@chakra-ui/react';
+import React from 'react';
+import { Box, Heading, Text, Button, SimpleGrid, VStack, HStack, Tooltip } from '@chakra-ui/react';
 import { LineChart, Smile, Meh, Frown } from 'lucide-react';
+import { useSessionStore } from '../store/sessionStore';
 
 const moods = [
   { value: 1, icon: Frown, label: 'Very Low', color: 'red.500', bgColor: 'red.50' },
@@ -11,7 +12,21 @@ const moods = [
 ];
 
 export default function MoodTracker() {
-  const [selectedMood, setSelectedMood] = useState<number | null>(null);
+  const addMoodEntry = useSessionStore(state => state.addMoodEntry);
+  const moodEntries = useSessionStore(state => state.moodEntries);
+  
+  // Get today's mood if exists
+  const today = new Date().toISOString().split('T')[0];
+  const todayMood = moodEntries.find(entry => 
+    entry.timestamp.startsWith(today)
+  )?.mood || null;
+
+  const handleSaveMood = (mood: number) => {
+    const moodData = moods.find(m => m.value === mood);
+    if (moodData) {
+      addMoodEntry(mood, moodData.label);
+    }
+  };
 
   return (
     <Box bg="blue.50" p={6} rounded="xl">
@@ -25,38 +40,41 @@ export default function MoodTracker() {
         
         <SimpleGrid columns={5} spacing={4}>
           {moods.map((mood) => (
-            <Button
+            <Tooltip 
               key={mood.value}
-              onClick={() => setSelectedMood(mood.value)}
-              variant="ghost"
-              height="auto"
-              p={4}
-              display="flex"
-              flexDir="column"
-              alignItems="center"
-              bg={selectedMood === mood.value ? mood.bgColor : 'white'}
-              transform={selectedMood === mood.value ? 'scale(1.1)' : undefined}
-              _hover={{ bg: mood.bgColor }}
-              transition="all 0.2s"
+              label={mood.label}
+              placement="top"
+              hasArrow
             >
-              <mood.icon color={selectedMood === mood.value ? mood.color : '#718096'} size={32} />
-              <Text mt={2} fontSize="sm" color={selectedMood === mood.value ? mood.color : 'gray.600'}>
-                {mood.label}
-              </Text>
-            </Button>
+              <Button
+                onClick={() => handleSaveMood(mood.value)}
+                variant="ghost"
+                height="auto"
+                p={4}
+                display="flex"
+                flexDir="column"
+                alignItems="center"
+                bg={todayMood === mood.value ? mood.bgColor : 'white'}
+                transform={todayMood === mood.value ? 'scale(1.1)' : undefined}
+                _hover={{ bg: mood.bgColor }}
+                transition="all 0.2s"
+                aria-label={`Select mood: ${mood.label}`}
+              >
+                <mood.icon 
+                  color={todayMood === mood.value ? mood.color : '#718096'} 
+                  size={32} 
+                />
+                <Text 
+                  mt={2} 
+                  fontSize="sm" 
+                  color={todayMood === mood.value ? mood.color : 'gray.600'}
+                >
+                  {mood.label}
+                </Text>
+              </Button>
+            </Tooltip>
           ))}
         </SimpleGrid>
-
-        {selectedMood && (
-          <Button
-            colorScheme="blue"
-            size="lg"
-            width="full"
-            mt={6}
-          >
-            Save Today's Mood
-          </Button>
-        )}
       </VStack>
     </Box>
   );

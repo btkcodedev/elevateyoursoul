@@ -3,48 +3,39 @@ import { Track } from '../types/music';
 export const UPLIFTING_TRACKS: Track[] = [
   {
     id: '1',
-    name: 'Rise Up',
-    artist_name: 'Inspiring Vibes',
-    image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=300&q=80',
-    audio_url: 'https://storage.googleapis.com/mindfulpath-audio/rise-up.mp3',
-    duration: 232,
-    mood: ['uplifting', 'happy', 'energetic']
+    name: 'Peaceful Meditation',
+    artist_name: 'Free Music Archive',
+    image: 'https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?auto=format&fit=crop&w=300&q=80',
+    audio_url: 'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Shipping_Lanes.mp3',
+    duration: 149,
+    mood: ['peaceful', 'uplifting']
   },
   {
     id: '2',
-    name: 'Positive Energy',
-    artist_name: 'Mindful Beats',
-    image: 'https://images.unsplash.com/photo-1470019693664-1d202d2c0907?auto=format&fit=crop&w=300&q=80',
-    audio_url: 'https://storage.googleapis.com/mindfulpath-audio/positive-energy.mp3',
-    duration: 159,
-    mood: ['uplifting', 'empowering', 'confident']
+    name: 'Mindful Journey',
+    artist_name: 'Chad Crouch',
+    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=300&q=80',
+    audio_url: 'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Algorithms.mp3',
+    duration: 180,
+    mood: ['energetic', 'inspiring']
   },
   {
     id: '3',
-    name: 'Morning Light',
-    artist_name: 'Peaceful Tunes',
+    name: 'Gentle Flow',
+    artist_name: 'Kevin MacLeod',
     image: 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=300&q=80',
-    audio_url: 'https://storage.googleapis.com/mindfulpath-audio/morning-light.mp3',
-    duration: 238,
-    mood: ['uplifting', 'happy', 'classic']
+    audio_url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Healing.mp3',
+    duration: 179,
+    mood: ['peaceful', 'meditative']
   },
   {
     id: '4',
-    name: 'Soaring High',
-    artist_name: 'Spirit Lifters',
+    name: 'Moonrise',
+    artist_name: 'Chad Crouch',
     image: 'https://images.unsplash.com/photo-1470116892389-0de5d9770b2c?auto=format&fit=crop&w=300&q=80',
-    audio_url: 'https://storage.googleapis.com/mindfulpath-audio/soaring-high.mp3',
-    duration: 183,
-    mood: ['uplifting', 'relaxing', 'positive']
-  },
-  {
-    id: '5',
-    name: 'Inner Peace',
-    artist_name: 'Zen Masters',
-    image: 'https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&w=300&q=80',
-    audio_url: 'https://storage.googleapis.com/mindfulpath-audio/inner-peace.mp3',
-    duration: 185,
-    mood: ['uplifting', 'peaceful', 'classic']
+    audio_url: 'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Moonrise.mp3',
+    duration: 161,
+    mood: ['uplifting', 'peaceful']
   }
 ];
 

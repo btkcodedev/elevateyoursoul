@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Heading,
@@ -20,70 +20,93 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { ListChecks, Target, Battery, Plus, X, Save } from 'lucide-react';
+import { useSessionStore } from '../store/sessionStore';
 
 interface Habit {
   id: string;
   label: string;
   completed: boolean;
+  timestamp: string;
 }
 
 interface Goal {
   id: string;
   title: string;
   progress: number;
+  timestamp: string;
 }
 
 interface EnergyLevel {
   time: string;
   level: number;
-  lastUpdated: string;
+  timestamp: string;
 }
 
 export default function SelfCare() {
-  const [habits, setHabits] = useState<Habit[]>([
-    { id: '1', label: 'Morning Meditation', completed: false },
-    { id: '2', label: 'Healthy Breakfast', completed: true },
-    { id: '3', label: 'Physical Activity', completed: false },
-    { id: '4', label: 'Mindful Break', completed: false },
-  ]);
-
-  const [goals, setGoals] = useState<Goal[]>([
-    { id: '1', title: 'Practice mindfulness', progress: 60 },
-    { id: '2', title: 'Daily walks', progress: 40 },
-  ]);
-
-  const [energyLevels, setEnergyLevels] = useState<EnergyLevel[]>([
-    { time: 'Morning', level: 80, lastUpdated: new Date().toISOString() },
-    { time: 'Afternoon', level: 60, lastUpdated: new Date().toISOString() },
-    { time: 'Evening', level: 40, lastUpdated: new Date().toISOString() },
-  ]);
-
+  const { selfCare, updateSelfCareHabits, updateSelfCareGoals, updateEnergyLevels } = useSessionStore();
   const [newHabit, setNewHabit] = useState('');
   const [newGoal, setNewGoal] = useState('');
   const [showHabitInput, setShowHabitInput] = useState(false);
   const [showGoalInput, setShowGoalInput] = useState(false);
   const toast = useToast();
 
+  // Initialize with default values if no data exists for today
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Initialize habits if none exist for today
+    if (!selfCare.habits.some(h => h.timestamp.startsWith(today))) {
+      updateSelfCareHabits([
+        { id: '1', label: 'Morning Meditation', completed: false, timestamp: new Date().toISOString() },
+        { id: '2', label: 'Healthy Breakfast', completed: false, timestamp: new Date().toISOString() },
+        { id: '3', label: 'Physical Activity', completed: false, timestamp: new Date().toISOString() },
+        { id: '4', label: 'Mindful Break', completed: false, timestamp: new Date().toISOString() },
+      ]);
+    }
+
+    // Initialize goals if none exist for today
+    if (!selfCare.goals.some(g => g.timestamp.startsWith(today))) {
+      updateSelfCareGoals([
+        { id: '1', title: 'Practice mindfulness', progress: 0, timestamp: new Date().toISOString() },
+        { id: '2', title: 'Daily walks', progress: 0, timestamp: new Date().toISOString() },
+      ]);
+    }
+
+    // Initialize energy levels if none exist for today
+    if (!selfCare.energyLevels.some(e => e.timestamp.startsWith(today))) {
+      updateEnergyLevels([
+        { time: 'Morning', level: 0, timestamp: new Date().toISOString() },
+        { time: 'Afternoon', level: 0, timestamp: new Date().toISOString() },
+        { time: 'Evening', level: 0, timestamp: new Date().toISOString() },
+      ]);
+    }
+  }, []);
+
   const handleHabitToggle = (id: string) => {
-    setHabits(habits.map(habit =>
+    const updatedHabits = selfCare.habits.map(habit =>
       habit.id === id ? { ...habit, completed: !habit.completed } : habit
-    ));
+    );
+    updateSelfCareHabits(updatedHabits);
     
     toast({
       title: "Habit updated",
       status: "success",
       duration: 2000,
-      isClosable: true,
     });
   };
 
   const addHabit = () => {
     if (newHabit.trim()) {
-      setHabits([...habits, {
-        id: Date.now().toString(),
-        label: newHabit.trim(),
-        completed: false,
-      }]);
+      const updatedHabits = [
+        ...selfCare.habits,
+        {
+          id: Date.now().toString(),
+          label: newHabit.trim(),
+          completed: false,
+          timestamp: new Date().toISOString(),
+        }
+      ];
+      updateSelfCareHabits(updatedHabits);
       setNewHabit('');
       setShowHabitInput(false);
       
@@ -97,11 +120,16 @@ export default function SelfCare() {
 
   const addGoal = () => {
     if (newGoal.trim()) {
-      setGoals([...goals, {
-        id: Date.now().toString(),
-        title: newGoal.trim(),
-        progress: 0,
-      }]);
+      const updatedGoals = [
+        ...selfCare.goals,
+        {
+          id: Date.now().toString(),
+          title: newGoal.trim(),
+          progress: 0,
+          timestamp: new Date().toISOString(),
+        }
+      ];
+      updateSelfCareGoals(updatedGoals);
       setNewGoal('');
       setShowGoalInput(false);
       
@@ -114,19 +142,21 @@ export default function SelfCare() {
   };
 
   const updateGoalProgress = (id: string, newProgress: number) => {
-    setGoals(goals.map(goal =>
+    const updatedGoals = selfCare.goals.map(goal =>
       goal.id === id ? { ...goal, progress: newProgress } : goal
-    ));
+    );
+    updateSelfCareGoals(updatedGoals);
   };
 
   const updateEnergyLevel = (time: string, newLevel: number) => {
-    setEnergyLevels(levels => levels.map(level =>
+    const updatedLevels = selfCare.energyLevels.map(level =>
       level.time === time ? {
         ...level,
         level: newLevel,
-        lastUpdated: new Date().toISOString(),
+        timestamp: new Date().toISOString(),
       } : level
-    ));
+    );
+    updateEnergyLevels(updatedLevels);
     
     toast({
       title: `${time} energy level updated`,
@@ -136,7 +166,8 @@ export default function SelfCare() {
   };
 
   const removeHabit = (id: string) => {
-    setHabits(habits.filter(habit => habit.id !== id));
+    const updatedHabits = selfCare.habits.filter(habit => habit.id !== id);
+    updateSelfCareHabits(updatedHabits);
     toast({
       title: "Habit removed",
       status: "info",
@@ -145,7 +176,8 @@ export default function SelfCare() {
   };
 
   const removeGoal = (id: string) => {
-    setGoals(goals.filter(goal => goal.id !== id));
+    const updatedGoals = selfCare.goals.filter(goal => goal.id !== id);
+    updateSelfCareGoals(updatedGoals);
     toast({
       title: "Goal removed",
       status: "info",
@@ -160,6 +192,12 @@ export default function SelfCare() {
     if (level >= 20) return 'orange';
     return 'red';
   };
+
+  // Get today's data
+  const today = new Date().toISOString().split('T')[0];
+  const todayHabits = selfCare.habits.filter(h => h.timestamp.startsWith(today));
+  const todayGoals = selfCare.goals.filter(g => g.timestamp.startsWith(today));
+  const todayEnergyLevels = selfCare.energyLevels.filter(e => e.timestamp.startsWith(today));
 
   return (
     <Box>
@@ -213,7 +251,7 @@ export default function SelfCare() {
               </HStack>
             )}
             
-            {habits.map((habit) => (
+            {todayHabits.map((habit) => (
               <HStack key={habit.id} justify="space-between">
                 <Checkbox
                   isChecked={habit.completed}
@@ -279,7 +317,7 @@ export default function SelfCare() {
               </HStack>
             )}
             
-            {goals.map((goal) => (
+            {todayGoals.map((goal) => (
               <Box key={goal.id} bg="white" p={3} rounded="md" width="full">
                 <HStack justify="space-between" mb={2}>
                   <Text fontSize="sm" fontWeight="medium">{goal.title}</Text>
@@ -326,7 +364,7 @@ export default function SelfCare() {
           </HStack>
           
           <VStack spacing={4}>
-            {energyLevels.map(({ time, level, lastUpdated }) => (
+            {todayEnergyLevels.map(({ time, level }) => (
               <Box key={time} width="full" bg="white" p={3} rounded="md">
                 <HStack justify="space-between" mb={2}>
                   <Text fontSize="sm" fontWeight="medium">{time}</Text>
@@ -353,9 +391,6 @@ export default function SelfCare() {
                     <SliderThumb />
                   </Tooltip>
                 </Slider>
-                <Text fontSize="xs" color="gray.500" mt={1}>
-                  Last updated: {new Date(lastUpdated).toLocaleTimeString()}
-                </Text>
               </Box>
             ))}
           </VStack>

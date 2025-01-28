@@ -1,11 +1,4 @@
-import {
-  JSXElementConstructor,
-  Key,
-  ReactElement,
-  ReactNode,
-  ReactPortal,
-  useEffect,
-} from "react";
+import React, { useEffect } from 'react';
 import {
   Box,
   Heading,
@@ -23,68 +16,27 @@ import {
   TabPanel,
   Skeleton,
   useToast,
-} from "@chakra-ui/react";
-import { Book, Headphones, Star, ExternalLink } from "lucide-react";
-import { useAmazonBooks } from "../store/amazonBooks";
+} from '@chakra-ui/react';
+import { Book, Headphones, Star, ExternalLink } from 'lucide-react';
+import { useAmazonBooks } from '../store/amazonBooks';
 
 export default function AmazonBooksBento() {
-  const { books, loading, fetchBooks } = useAmazonBooks();
+  const { books, loading, error, fetchBooks } = useAmazonBooks();
   const toast = useToast();
 
   useEffect(() => {
-    fetchBooks().catch(() => {
+    fetchBooks().catch((err) => {
       toast({
-        title: "Error",
-        description: "Failed to load book recommendations",
-        status: "error",
+        title: 'Error',
+        description: 'Failed to load book recommendations',
+        status: 'error',
         duration: 5000,
         isClosable: true,
       });
     });
   }, [fetchBooks, toast]);
 
-  const renderBookCard = (book: {
-    id: Key | null | undefined;
-    imageUrl: string | undefined;
-    title:
-      | string
-      | number
-      | boolean
-      | ReactElement<unknown, string | JSXElementConstructor<unknown>>
-      | Iterable<ReactNode>
-      | null
-      | undefined;
-    format: string;
-    author:
-      | string
-      | number
-      | boolean
-      | ReactElement<unknown, string | JSXElementConstructor<unknown>>
-      | Iterable<ReactNode>
-      | ReactPortal
-      | Iterable<ReactNode>
-      | null
-      | undefined;
-    rating:
-      | string
-      | number
-      | boolean
-      | ReactElement<unknown, string | JSXElementConstructor<unknown>>
-      | Iterable<ReactNode>
-      | null
-      | undefined;
-    price:
-      | string
-      | number
-      | boolean
-      | ReactElement<unknown, string | JSXElementConstructor<unknown>>
-      | Iterable<ReactNode>
-      | ReactPortal
-      | Iterable<ReactNode>
-      | null
-      | undefined;
-    url: string | undefined;
-  }) => (
+  const renderBookCard = (book) => (
     <Box
       key={book.id}
       bg="white"
@@ -94,29 +46,29 @@ export default function AmazonBooksBento() {
       borderWidth="1px"
       borderColor="gray.100"
       _hover={{
-        transform: "translateY(-2px)",
-        shadow: "lg",
+        transform: 'translateY(-2px)',
+        shadow: 'lg',
       }}
       transition="all 0.2s"
     >
       <VStack spacing={3} align="start">
         <Image
           src={book.imageUrl}
-          alt={typeof book.title === "string" ? book.title : undefined}
+          alt={book.title}
           height="200px"
           width="100%"
           objectFit="cover"
           rounded="md"
           fallback={<Skeleton height="200px" width="100%" />}
         />
-        <Badge colorScheme={book.format === "audiobook" ? "purple" : "blue"}>
+        <Badge colorScheme={book.format === 'audiobook' ? 'purple' : 'blue'}>
           <HStack spacing={1}>
-            {book.format === "audiobook" ? (
+            {book.format === 'audiobook' ? (
               <Headphones size={12} />
             ) : (
               <Book size={12} />
             )}
-            <Text>{book.format === "audiobook" ? "Audiobook" : "Book"}</Text>
+            <Text>{book.format === 'audiobook' ? 'Audiobook' : 'Book'}</Text>
           </HStack>
         </Badge>
         <Heading size="sm" noOfLines={2}>
@@ -126,11 +78,7 @@ export default function AmazonBooksBento() {
           by {book.author}
         </Text>
         <HStack spacing={1}>
-          {Array.from({
-            length: Math.floor(
-              typeof book.rating === "number" ? book.rating : 0
-            ),
-          }).map((_, i) => (
+          {Array.from({ length: Math.floor(book.rating) }).map((_, i) => (
             <Star key={i} size={14} fill="#F6E05E" color="#F6E05E" />
           ))}
           <Text fontSize="sm" color="gray.600" ml={1}>
@@ -149,6 +97,15 @@ export default function AmazonBooksBento() {
           colorScheme="blue"
           size="sm"
           width="full"
+          py={5}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="auto"
+          _hover={{
+            transform: 'translateY(-1px)',
+            boxShadow: 'md',
+          }}
         >
           View on Amazon
         </Button>
@@ -182,36 +139,40 @@ export default function AmazonBooksBento() {
         <TabPanels>
           <TabPanel px={0}>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
-              {loading
-                ? Array.from({ length: 3 }).map((_, i) => (
-                    <Box key={i} p={4}>
-                      <VStack spacing={4}>
-                        <Skeleton height="200px" width="100%" />
-                        <Skeleton height="20px" width="80%" />
-                        <Skeleton height="20px" width="60%" />
-                      </VStack>
-                    </Box>
-                  ))
-                : books
-                    .filter((book) => book.format === "book")
-                    .map(renderBookCard)}
+              {loading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <Box key={i} p={4}>
+                    <VStack spacing={4}>
+                      <Skeleton height="200px" width="100%" />
+                      <Skeleton height="20px" width="80%" />
+                      <Skeleton height="20px" width="60%" />
+                    </VStack>
+                  </Box>
+                ))
+              ) : (
+                books
+                  .filter(book => book.format === 'book')
+                  .map(renderBookCard)
+              )}
             </SimpleGrid>
           </TabPanel>
           <TabPanel px={0}>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
-              {loading
-                ? Array.from({ length: 3 }).map((_, i) => (
-                    <Box key={i} p={4}>
-                      <VStack spacing={4}>
-                        <Skeleton height="200px" width="100%" />
-                        <Skeleton height="20px" width="80%" />
-                        <Skeleton height="20px" width="60%" />
-                      </VStack>
-                    </Box>
-                  ))
-                : books
-                    .filter((book) => book.format === "audiobook")
-                    .map(renderBookCard)}
+              {loading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <Box key={i} p={4}>
+                    <VStack spacing={4}>
+                      <Skeleton height="200px" width="100%" />
+                      <Skeleton height="20px" width="80%" />
+                      <Skeleton height="20px" width="60%" />
+                    </VStack>
+                  </Box>
+                ))
+              ) : (
+                books
+                  .filter(book => book.format === 'audiobook')
+                  .map(renderBookCard)
+              )}
             </SimpleGrid>
           </TabPanel>
         </TabPanels>

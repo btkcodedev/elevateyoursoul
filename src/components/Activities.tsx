@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 import {
   Box,
   Heading,
@@ -17,100 +17,86 @@ import {
   ListItem,
   ListIcon,
   Badge,
-} from "@chakra-ui/react";
-import {
-  Brain,
-  BookOpen,
-  PenTool,
-  CheckCircle2,
-  Clock,
-  ArrowRight,
-} from "lucide-react";
+} from '@chakra-ui/react';
+import { Brain, BookOpen, PenTool, CheckCircle2, Clock, ArrowRight } from 'lucide-react';
 
 const activities = [
   {
     icon: Brain,
-    title: "CBT Exercise",
-    description:
-      "Challenge negative thoughts using Cognitive Behavioral Therapy techniques",
-    duration: "10 mins",
+    title: 'CBT Exercise',
+    description: 'Challenge negative thoughts using Cognitive Behavioral Therapy techniques',
+    duration: '10 mins',
     content: {
-      title: "Cognitive Behavioral Therapy Exercise",
-      description:
-        "CBT is one of the most evidence-based approaches for managing thoughts and emotions.",
+      title: 'Cognitive Behavioral Therapy Exercise',
+      description: 'CBT is one of the most evidence-based approaches for managing thoughts and emotions.',
       steps: [
-        "Identify a troubling situation or condition in your life",
-        "Become aware of your thoughts about it",
-        "Identify negative patterns in your thinking",
-        "Challenge your negative thoughts",
-        "Replace them with realistic ones",
+        'Identify a troubling situation or condition in your life',
+        'Become aware of your thoughts about it',
+        'Identify negative patterns in your thinking',
+        'Challenge your negative thoughts',
+        'Replace them with realistic ones'
       ],
       benefits: [
-        "Reduces symptoms of anxiety and depression",
-        "Improves emotional regulation",
-        "Develops better coping strategies",
-        "Enhances problem-solving abilities",
+        'Reduces symptoms of anxiety and depression',
+        'Improves emotional regulation',
+        'Develops better coping strategies',
+        'Enhances problem-solving abilities'
       ],
-      research:
-        "Multiple meta-analyses have shown CBT to be effective for various mental health conditions (Butler et al., 2006)",
-    },
+      research: 'Multiple meta-analyses have shown CBT to be effective for various mental health conditions (Butler et al., 2006)'
+    }
   },
   {
     icon: BookOpen,
-    title: "Gratitude Journal",
-    description: "Practice gratitude through structured journaling",
-    duration: "5 mins",
+    title: 'Gratitude Journal',
+    description: 'Practice gratitude through structured journaling',
+    duration: '5 mins',
     content: {
-      title: "Evidence-Based Gratitude Practice",
-      description:
-        "Regular gratitude practice has been shown to increase well-being and life satisfaction.",
+      title: 'Evidence-Based Gratitude Practice',
+      description: 'Regular gratitude practice has been shown to increase well-being and life satisfaction.',
       steps: [
-        "Find a quiet moment in your day",
-        "Write down three specific things you're grateful for",
-        "Include why these things matter to you",
-        "Reflect on how they impact your life",
-        "Notice how this practice affects your mood",
+        'Find a quiet moment in your day',
+        'Write down three specific things you\'re grateful for',
+        'Include why these things matter to you',
+        'Reflect on how they impact your life',
+        'Notice how this practice affects your mood'
       ],
       benefits: [
-        "Increases positive emotions",
-        "Improves sleep quality",
-        "Reduces stress levels",
-        "Enhances relationships",
+        'Increases positive emotions',
+        'Improves sleep quality',
+        'Reduces stress levels',
+        'Enhances relationships'
       ],
-      research:
-        "Research by Emmons & McCullough (2003) showed significant well-being improvements from daily gratitude journaling",
-    },
+      research: 'Research by Emmons & McCullough (2003) showed significant well-being improvements from daily gratitude journaling'
+    }
   },
   {
     icon: PenTool,
-    title: "Mindful Writing",
-    description: "Express your feelings through structured writing exercises",
-    duration: "15 mins",
+    title: 'Mindful Writing',
+    description: 'Express your feelings through structured writing exercises',
+    duration: '15 mins',
     content: {
-      title: "Therapeutic Writing Exercise",
-      description:
-        "Expressive writing has been shown to have both psychological and physical health benefits.",
+      title: 'Therapeutic Writing Exercise',
+      description: 'Expressive writing has been shown to have both psychological and physical health benefits.',
       steps: [
-        "Choose a quiet, comfortable space",
-        "Write continuously for 15 minutes",
-        "Focus on your deepest thoughts and feelings",
-        "Don't worry about grammar or spelling",
-        "Reflect on what you've written",
+        'Choose a quiet, comfortable space',
+        'Write continuously for 15 minutes',
+        'Focus on your deepest thoughts and feelings',
+        'Don\'t worry about grammar or spelling',
+        'Reflect on what you\'ve written'
       ],
       benefits: [
-        "Reduces stress and anxiety",
-        "Improves emotional processing",
-        "Enhances self-awareness",
-        "Helps organize thoughts",
+        'Reduces stress and anxiety',
+        'Improves emotional processing',
+        'Enhances self-awareness',
+        'Helps organize thoughts'
       ],
-      research:
-        "Pennebaker's research (1997) demonstrated significant health improvements from expressive writing",
-    },
-  },
+      research: 'Pennebaker\'s research (1997) demonstrated significant health improvements from expressive writing'
+    }
+  }
 ];
 
 export default function Activities() {
-  const [selectedActivity, setSelectedActivity] = useState<typeof activities[0] | null>(null);
+  const [selectedActivity, setSelectedActivity] = useState(null);
 
   return (
     <Box>
@@ -129,7 +115,7 @@ export default function Activities() {
             shadow="md"
             borderWidth="1px"
             borderColor="gray.200"
-            _hover={{ shadow: "lg", transform: "translateY(-2px)" }}
+            _hover={{ shadow: 'lg', transform: 'translateY(-2px)' }}
             transition="all 0.2s"
           >
             <VStack align="start" spacing={3}>
@@ -178,15 +164,11 @@ export default function Activities() {
             <ModalBody pb={6}>
               <VStack align="stretch" spacing={6}>
                 <Box>
-                  <Text color="gray.700">
-                    {selectedActivity.content.description}
-                  </Text>
+                  <Text color="gray.700">{selectedActivity.content.description}</Text>
                 </Box>
 
                 <Box>
-                  <Heading size="sm" mb={3}>
-                    Steps to Follow
-                  </Heading>
+                  <Heading size="sm" mb={3}>Steps to Follow</Heading>
                   <List spacing={3}>
                     {selectedActivity.content.steps.map((step, index) => (
                       <ListItem key={index}>
@@ -198,9 +180,7 @@ export default function Activities() {
                 </Box>
 
                 <Box>
-                  <Heading size="sm" mb={3}>
-                    Benefits
-                  </Heading>
+                  <Heading size="sm" mb={3}>Benefits</Heading>
                   <List spacing={3}>
                     {selectedActivity.content.benefits.map((benefit, index) => (
                       <ListItem key={index}>
@@ -212,9 +192,7 @@ export default function Activities() {
                 </Box>
 
                 <Box>
-                  <Badge colorScheme="purple" mb={2}>
-                    Research Evidence
-                  </Badge>
+                  <Badge colorScheme="purple" mb={2}>Research Evidence</Badge>
                   <Text fontSize="sm" color="gray.600">
                     {selectedActivity.content.research}
                   </Text>

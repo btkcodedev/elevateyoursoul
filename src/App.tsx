@@ -1,6 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Welcome from './pages/Welcome';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import CopyrightStatement from './components/CopyrightStatement';
 
@@ -8,8 +7,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <CopyrightStatement />
     </>

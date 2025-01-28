@@ -37,7 +37,7 @@ export default function MusicPlayer() {
   const [tracks, setTracks] = useState<Track[]>(UPLIFTING_TRACKS);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.7);
+  const [volume, setVolume] = useState(0.1);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showPlaylist, setShowPlaylist] = useState(true);
@@ -310,7 +310,7 @@ const handlePlay = async () => {
                   size="sm"
                   colorScheme="teal"
                   variant="ghost"
-                  onClick={() => setVolume(volume === 0 ? 0.7 : 0)}
+                  onClick={() => setVolume(volume === 0 ? 0.2 : 0)}
                 />
                 <Slider
                   value={volume}

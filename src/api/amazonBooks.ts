@@ -4,7 +4,7 @@ import { createClient } from 'redis';
 import { Book } from '../store/amazonBooks';
 
 const redis = createClient({
-  url: import.meta.env.VITE_REDIS_URL || 'redis://localhost:6379'
+  url: process.env.REDIS_URL
 });
 
 redis.on('error', (err) => console.error('Redis Client Error', err));
@@ -29,10 +29,10 @@ class AmazonBooksAPI {
 
   constructor() {
     this.config = {
-      accessKey: import.meta.env.VITE_AMAZON_ACCESS_KEY || 'mock-access-key',
-      secretKey: import.meta.env.VITE_AMAZON_SECRET_KEY || 'mock-secret-key',
-      partnerTag: import.meta.env.VITE_AMAZON_PARTNER_TAG || 'mock-partner-tag',
-      region: import.meta.env.VITE_AMAZON_REGION || 'us-east-1'
+      accessKey: process.env.AMAZON_ACCESS_KEY!,
+      secretKey: process.env.AMAZON_SECRET_KEY!,
+      partnerTag: process.env.AMAZON_PARTNER_TAG!,
+      region: process.env.AMAZON_REGION || 'us-east-1'
     };
   }
 
@@ -86,29 +86,19 @@ class AmazonBooksAPI {
       return books;
     } catch (error) {
       console.error('Amazon API Error:', error);
-      // Return mock data in case of error
-      return [
-        {
-          id: 'mock-1',
-          title: 'The Power of Now',
-          author: 'Eckhart Tolle',
-          imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=300&q=80',
-          rating: 4.5,
-          format: 'book',
-          url: '#',
-          price: '$14.99'
-        }
-      ];
+      throw new Error('Failed to fetch books from Amazon');
     }
   }
 
   private generateAuthHeader(): string {
     // Implement Amazon API authentication signature generation
-    return 'mock-auth-header';
+    // This is a placeholder
+    return '';
   }
 
   private transformApiResponse(data: any): Book[] {
     // Transform Amazon API response to our Book interface
+    // This is a placeholder implementation
     return [];
   }
 }

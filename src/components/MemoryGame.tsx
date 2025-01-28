@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { Brain, Trophy, RotateCcw, Timer } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSessionStore } from '../store/sessionStore';
 
 const MotionBox = motion(Box);
 
@@ -26,6 +27,7 @@ export default function MemoryGame() {
   const [gameStarted, setGameStarted] = useState(false);
   const [timer, setTimer] = useState(0);
   const [bestScore, setBestScore] = useState<number | null>(null);
+  const addMemoryGameResult = useSessionStore(state => state.addMemoryGameResult);
   const toast = useToast();
 
   useEffect(() => {
@@ -106,6 +108,8 @@ export default function MemoryGame() {
               isClosable: true,
             });
           }
+          // Record the game result
+          addMemoryGameResult(moves + 1, timer, true);
         }
       } else {
         setTimeout(() => {

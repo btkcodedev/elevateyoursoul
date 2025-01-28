@@ -8,16 +8,22 @@ import {
   Text,
   HStack,
   useToast,
+  List,
+  ListItem,
+  IconButton,
 } from '@chakra-ui/react';
-import { PenTool, Save, Trash2 } from 'lucide-react';
+import { PenTool, Save, Trash2, X } from 'lucide-react';
+import { useSessionStore } from '../store/sessionStore';
 
 export default function MindfulWriting() {
   const [content, setContent] = useState('');
+  const { addMindfulWriting, mindfulWritings, removeMindfulWriting } = useSessionStore();
   const toast = useToast();
 
   const handleSave = () => {
     if (content.trim()) {
-      // Save logic would go here
+      addMindfulWriting(content.trim());
+      setContent('');
       toast({
         title: "Entry saved",
         description: "Your mindful writing has been saved successfully.",
@@ -30,6 +36,21 @@ export default function MindfulWriting() {
   const handleClear = () => {
     setContent('');
   };
+
+  const handleDelete = (id: string) => {
+    removeMindfulWriting(id);
+    toast({
+      title: "Entry removed",
+      status: "info",
+      duration: 2000,
+    });
+  };
+
+  // Get today's entries
+  const today = new Date().toISOString().split('T')[0];
+  const todayEntries = mindfulWritings.filter(entry => 
+    entry.timestamp.startsWith(today)
+  );
 
   return (
     <Box>
@@ -100,6 +121,32 @@ export default function MindfulWriting() {
             Save Entry
           </Button>
         </HStack>
+
+        {todayEntries.length > 0 && (
+          <List spacing={3} mt={4}>
+            {todayEntries.map((entry) => (
+              <ListItem
+                key={entry.id}
+                p={3}
+                bg="blue.50"
+                rounded="md"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="start"
+              >
+                <Text flex="1" whiteSpace="pre-wrap">{entry.content}</Text>
+                <IconButton
+                  icon={<X size={14} />}
+                  aria-label="Remove entry"
+                  variant="ghost"
+                  colorScheme="red"
+                  size="sm"
+                  onClick={() => handleDelete(entry.id)}
+                />
+              </ListItem>
+            ))}
+          </List>
+        )}
       </VStack>
     </Box>
   );
