@@ -18,16 +18,26 @@ interface AdBentoProps {
 const AdBento = memo(({ slot, format = 'auto', className = '', testMode = false }: AdBentoProps) => {
   useEffect(() => {
     try {
+      // Initialize AdSense only if not already initialized
       if (!window.adsbygoogle) {
         const script = document.createElement('script');
         script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT}`;
         script.async = true;
         script.crossOrigin = 'anonymous';
+        script.setAttribute('data-ad-client', import.meta.env.VITE_GOOGLE_ADSENSE_CLIENT);
         document.head.appendChild(script);
         window.adsbygoogle = window.adsbygoogle || [];
       }
 
-      window.adsbygoogle.push({});
+      // Push the ad after script loads
+      const adInterval = setInterval(() => {
+        if (window.adsbygoogle) {
+          window.adsbygoogle.push({});
+          clearInterval(adInterval);
+        }
+      }, 100);
+
+      return () => clearInterval(adInterval);
     } catch (error) {
       console.error('AdSense error:', error);
     }
@@ -53,6 +63,8 @@ const AdBento = memo(({ slot, format = 'auto', className = '', testMode = false 
           borderColor: 'gray.300',
         }}
         transition="all 0.2s"
+        role="complementary"
+        aria-label="Advertisement"
       >
         <VStack spacing={3}>
           <HStack spacing={2}>
@@ -93,6 +105,9 @@ const AdBento = memo(({ slot, format = 'auto', className = '', testMode = false 
         borderColor: 'gray.200',
       }}
       transition="all 0.2s"
+      role="complementary"
+      aria-label="Advertisement"
+      data-ad-status="not-loaded"
     >
       <ins
         className="adsbygoogle"
@@ -105,6 +120,7 @@ const AdBento = memo(({ slot, format = 'auto', className = '', testMode = false 
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive="true"
+        data-adtest={testMode ? 'on' : 'off'}
       />
     </Box>
   );

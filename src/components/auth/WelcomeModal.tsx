@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Modal,
   ModalOverlay,
@@ -8,41 +8,42 @@ import {
   VStack,
   Button,
   Text,
-  Divider,
   useDisclosure,
   Box,
-  Link,
   Collapse,
   useColorModeValue,
-  Alert,
-  AlertIcon,
-  AlertDescription,
-  HStack,
-} from '@chakra-ui/react';
-import { LogIn, User, AlertTriangle, ChevronDown, ChevronUp, FileText, Shield } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
-import { PrivacyPolicy, TermsAndConditions } from '../legal/LegalContent';
+  Icon,
+} from "@chakra-ui/react";
+import {
+  User,
+  ChevronDown,
+  ChevronUp,
+  FileText,
+  Shield,
+  Flower2,
+} from "lucide-react";
+import { supabase } from "../../lib/supabase";
+import { PrivacyPolicy, TermsAndConditions } from "../legal/LegalContent";
 
 export default function WelcomeModal() {
   const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
   const [showLegal, setShowLegal] = React.useState(false);
-  const [showPrivacy, setShowPrivacy] = React.useState(false);
-  const [showTerms, setShowTerms] = React.useState(false);
   const bgGradient = useColorModeValue(
-    'linear(to-br, blue.50, purple.50)',
-    'linear(to-br, gray.900, purple.900)'
+    "linear(to-br, blue.50, purple.50)",
+    "linear(to-br, gray.900, purple.900)"
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleGoogleSignIn = async () => {
     try {
       await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
-          redirectTo: window.location.origin
-        }
+          redirectTo: window.location.origin,
+        },
       });
     } catch (error) {
-      console.error('Error signing in with Google:', error);
+      console.error("Error signing in with Google:", error);
     }
   };
 
@@ -54,13 +55,13 @@ export default function WelcomeModal() {
   const {
     isOpen: isPrivacyOpen,
     onOpen: onPrivacyOpen,
-    onClose: onPrivacyClose
+    onClose: onPrivacyClose,
   } = useDisclosure();
 
   const {
     isOpen: isTermsOpen,
     onOpen: onTermsOpen,
-    onClose: onTermsClose
+    onClose: onTermsClose,
   } = useDisclosure();
 
   return (
@@ -78,7 +79,7 @@ export default function WelcomeModal() {
           mx={4}
           overflow="hidden"
           border="1px solid"
-          borderColor={useColorModeValue('gray.100', 'gray.700')}
+          borderColor={useColorModeValue("gray.100", "gray.700")}
         >
           <Box
             position="absolute"
@@ -87,41 +88,61 @@ export default function WelcomeModal() {
             opacity={0.9}
             zIndex={-1}
           />
-          
-          <ModalHeader 
-            textAlign="center" 
-            fontSize="2xl"
-            pt={8}
-            pb={4}
-            px={8}
-          >
+
+          <ModalHeader textAlign="center" fontSize="2xl" pt={8} pb={4} px={8}>
             Welcome to ElevateYourSoul
           </ModalHeader>
 
-          <ModalBody pb={8} px={8}>
+          <ModalBody pb={4} px={8}>
             <VStack spacing={8}>
-              <Text 
-                textAlign="center" 
-                color={useColorModeValue('gray.600', 'gray.300')}
+              <Text
+                textAlign="center"
+                color={useColorModeValue("gray.600", "gray.300")}
                 fontSize="lg"
               >
                 Begin your journey to mental wellness and mindful living
               </Text>
-
-              <Alert 
-                status="warning" 
-                variant="left-accent" 
-                borderRadius="md"
-                fontSize="sm"
+              <Box
+                position="relative"
+                width="full"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                py={4}
               >
-                <AlertIcon as={AlertTriangle} />
-                <AlertDescription>
-                  This app is not a substitute for professional medical advice or treatment. 
-                  If you're experiencing a crisis, please seek immediate professional help.
-                </AlertDescription>
-              </Alert>
-
-              <Button
+                <Box
+                  position="relative"
+                  _before={{
+                    content: '""',
+                    position: "absolute",
+                    top: "50%",
+                    left: 0,
+                    right: 0,
+                    height: "1px",
+                    bg: "gray.200",
+                    zIndex: 0,
+                  }}
+                >
+                  <Box
+                    position="relative"
+                    bg={useColorModeValue("white", "gray.800")}
+                    px={2}
+                    zIndex={1}
+                    rounded="full"
+                    shadow="sm"
+                  >
+                    <Icon
+                      as={Flower2}
+                      color="pink.400"
+                      boxSize={8}
+                      transform="rotate(0deg)"
+                      animation="spin 20s linear infinite"
+                    />
+                  </Box>
+                </Box>
+              </Box>
+              {/* For future release */}
+              {/* <Button
                 leftIcon={<LogIn size={18} />}
                 colorScheme="blue"
                 size="lg"
@@ -134,9 +155,7 @@ export default function WelcomeModal() {
                 transition="all 0.2s"
               >
                 Continue with Google
-              </Button>
-
-              <Divider />
+              </Button> */}
 
               <Button
                 leftIcon={<User size={18} />}
@@ -157,18 +176,24 @@ export default function WelcomeModal() {
                   variant="ghost"
                   size="sm"
                   width="full"
-                  rightIcon={showLegal ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  rightIcon={
+                    showLegal ? (
+                      <ChevronUp size={16} />
+                    ) : (
+                      <ChevronDown size={16} />
+                    )
+                  }
                   onClick={() => setShowLegal(!showLegal)}
                   mb={2}
                 >
                   Legal Information
                 </Button>
-                
+
                 <Collapse in={showLegal}>
                   <VStack
                     spacing={4}
                     p={4}
-                    bg={useColorModeValue('white', 'gray.800')}
+                    bg={useColorModeValue("white", "gray.800")}
                     rounded="md"
                     fontSize="sm"
                     align="stretch"
@@ -194,19 +219,26 @@ export default function WelcomeModal() {
                     </Button>
 
                     <Text fontSize="xs" color="gray.500">
-                      By continuing, you acknowledge that you have read and agree to our Privacy Policy
-                      and Terms of Conditions.
+                      By continuing, you acknowledge that you have read and
+                      agree to our Privacy Policy and Terms of Conditions.
                     </Text>
                   </VStack>
                 </Collapse>
               </Box>
+
+              {/* Decorative Flower */}
             </VStack>
           </ModalBody>
         </ModalContent>
       </Modal>
 
       {/* Privacy Policy Modal */}
-      <Modal isOpen={isPrivacyOpen} onClose={onPrivacyClose} size="xl" scrollBehavior="inside">
+      <Modal
+        isOpen={isPrivacyOpen}
+        onClose={onPrivacyClose}
+        size="xl"
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Privacy Policy</ModalHeader>
@@ -217,7 +249,12 @@ export default function WelcomeModal() {
       </Modal>
 
       {/* Terms and Conditions Modal */}
-      <Modal isOpen={isTermsOpen} onClose={onTermsClose} size="xl" scrollBehavior="inside">
+      <Modal
+        isOpen={isTermsOpen}
+        onClose={onTermsClose}
+        size="xl"
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Terms and Conditions</ModalHeader>

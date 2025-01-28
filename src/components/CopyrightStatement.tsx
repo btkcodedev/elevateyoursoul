@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Text, Button, useDisclosure } from '@chakra-ui/react';
+import { Box, Text, Button, useDisclosure, HStack, Badge } from '@chakra-ui/react';
 import { Info } from 'lucide-react';
 import CopyrightModal from './CopyrightModal';
+import { version } from '../../package.json';
 
 export default function CopyrightStatement() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,18 +25,30 @@ export default function CopyrightStatement() {
       gap={2}
       zIndex={100}
     >
-      <Text fontSize="sm" color="gray.600">
-        © {new Date().getFullYear()} ElevateYourSoul
-      </Text>
-      <Button
-        size="xs"
-        variant="ghost"
-        colorScheme="blue"
-        leftIcon={<Info size={14} />}
-        onClick={onOpen}
-      >
-        License Info
-      </Button>
+      <HStack spacing={4}>
+        <Text fontSize="sm" color="gray.600">
+          © {new Date().getFullYear()} ElevateYourSoul
+        </Text>
+        <Button
+          size="xs"
+          variant="ghost"
+          colorScheme="blue"
+          leftIcon={<Info size={14} />}
+          onClick={onOpen}
+        >
+          License Info
+        </Button>
+        <Badge
+          colorScheme="gray"
+          variant="subtle"
+          px={2}
+          py={1}
+          borderRadius="sm"
+          fontSize="xs"
+        >
+          v{version}
+        </Badge>
+      </HStack>
       
       <CopyrightModal isOpen={isOpen} onClose={onClose} />
     </Box>

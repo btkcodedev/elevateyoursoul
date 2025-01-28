@@ -37,7 +37,7 @@ export default function MusicPlayer() {
   const [tracks, setTracks] = useState<Track[]>(UPLIFTING_TRACKS);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.1);
+  const [volume, setVolume] = useState(0.2); // Start with 20% volume
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showPlaylist, setShowPlaylist] = useState(true);
@@ -51,6 +51,13 @@ export default function MusicPlayer() {
       setCurrentTrack(tracks[0]);
     }
   }, [tracks]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      // Set initial volume to a calm level (20%)
+      audioRef.current.volume = 0.2;
+    }
+  }, []);
 
   useEffect(() => {
     if (audioRef.current) {

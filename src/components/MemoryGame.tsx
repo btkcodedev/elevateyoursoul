@@ -90,7 +90,7 @@ export default function MemoryGame() {
         setCards(
           cards!.map((card) =>
             card.id === firstId || card.id === secondId
-              ? { ...card, isMatched: true }
+              ? { ...card, isMatched: true, isFlipped: true }
               : card
           )
         );
@@ -108,7 +108,6 @@ export default function MemoryGame() {
               isClosable: true,
             });
           }
-          // Record the game result
           addMemoryGameResult(moves + 1, timer, true);
         }
       } else {
@@ -197,7 +196,7 @@ export default function MemoryGame() {
                   alignItems="center"
                   justifyContent="center"
                   fontSize="2xl"
-                  transform={`rotateY(${card.isFlipped ? '180deg' : '0deg'})`}
+                  transform={`rotateY(${card.isFlipped || card.isMatched ? '180deg' : '0deg'})`}
                   transition="transform 0.6s"
                   position="relative"
                   style={{ transformStyle: 'preserve-3d' }}
@@ -225,6 +224,7 @@ export default function MemoryGame() {
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
+                    bg={card.isMatched ? "green.100" : "white"}
                   >
                     {card.emoji}
                   </Box>
