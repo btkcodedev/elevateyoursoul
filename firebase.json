@@ -8,6 +8,19 @@
     ],
     "headers": [
       {
+        "source": "**/*.@(js|css|html|ico|png|svg|txt)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          },
+          {
+            "key": "Expires",
+            "value": "0"
+          }
+        ]
+      },
+      {
         "source": "/ads.txt",
         "headers": [
           {
