@@ -1,13 +1,22 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { createHtmlPlugin } from 'vite-plugin-html';
 
 export default defineConfig({
   plugins: [
     react(),
+    createHtmlPlugin({
+      minify: true,
+      inject: {
+        data: {
+          version: new Date().getTime(), // Cache busting by appending a unique version
+        },
+      },
+    }),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png'],
+      includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png', 'ads.txt'],
       manifest: {
         name: 'ElevateYourSoul',
         short_name: 'ElevateYourSoul',
@@ -15,7 +24,7 @@ export default defineConfig({
         theme_color: '#0EA5E9',
         background_color: '#ffffff',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/?v=' + new Date().getTime(), // Ensuring start_url cache busting
         icons: [
           {
             src: '/icon-192.png',
@@ -32,7 +41,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,txt}'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -52,6 +61,15 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+      }
+    }
+  },
   optimizeDeps: {
     exclude: ['lucide-react']
   }
