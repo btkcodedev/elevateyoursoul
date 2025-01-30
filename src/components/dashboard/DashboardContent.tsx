@@ -57,9 +57,9 @@ const DashboardContent = memo(() => {
             <SupportSection />
           </WrappedComponent>
         </Suspense>
-        <Suspense fallback={<LoadingFallback />}>
+        {/* <Suspense fallback={<LoadingFallback />}>
           <AdBento slot="dashboard-left" format="vertical" />
-        </Suspense>
+        </Suspense> */}
         <Suspense fallback={<LoadingFallback />}>
           <WrappedComponent>
             <AmazonBooksBento />
@@ -89,9 +89,9 @@ const DashboardContent = memo(() => {
             <MemoryGame />
           </WrappedComponent>
         </Suspense>
-        <Suspense fallback={<LoadingFallback />}>
+        {/* <Suspense fallback={<LoadingFallback />}>
           <AdBento slot="dashboard-right" format="vertical" />
-        </Suspense>
+        </Suspense> */}
       </VStack>
     </SimpleGrid>
   );
