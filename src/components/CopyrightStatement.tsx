@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Text, Button, useDisclosure, HStack, Badge } from '@chakra-ui/react';
+import { Box, Text, Button, useDisclosure, HStack, Badge, Link as ChakraLink } from '@chakra-ui/react';
 import { Info } from 'lucide-react';
+import { Link as RouterLink } from 'react-router-dom';
 import CopyrightModal from './CopyrightModal';
 import { version } from '../../package.json';
 
@@ -38,6 +39,9 @@ export default function CopyrightStatement() {
         >
           License Info
         </Button>
+        <ChakraLink as={RouterLink} to="/privacy-policy" fontSize="sm" color="blue.500">
+          Privacy Policy
+        </ChakraLink>
         <Badge
           colorScheme="gray"
           variant="subtle"
